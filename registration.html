@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      const token=localStorage.getItem("token")
+fetch("http://localhost:2000/emps",{
+  headers:{
+      "Authorization":"Bearer "+token
+  }
+  
+}).then(response=>{return response.json()}).then(data=>{
+  var table
+  table='<table border="2"><tr><td>ID</td><td>Name</td><td>Age</td><td>Updation</td><td>Deletion</td></tr>'
+  for(var i=0;i<data.length;i++)
+  {
+      table+=`<tr>
+                      <td>${data[i]._id}</td>
+                      <td>${data[i].name}</td>
+                      <td>${data[i].age}</td>
+                      <td><button id=${data[i].name}>Update</button></td>
+                      <td><button id=${data[i]._id}  onclick="Delete(${data[i]._id})">Delete</button></td>
+              </tr>`
+      // let delbtn=document.getElementById(`${data[i]._id}`)
+      // delbtn.addEventListener('click',Delete)    
+  
+  }      
+  
+ 
+
+})
+function enterData()
+{
+var a=document.getElementById("name").value;
+var b=document.getElementById("location").value;
+var c=document.getElementById("bloodgroup").value;
+var d=parseInt(document.getElementById("age").value);
+var e=parseInt(document.getElementById("number").value);
+var f=document.getElementById("email").value;
+const emps={
+  "_id":e,
+  "name":a,
+  "location":b,
+  "blood group":c,
+  "age":d,
+  "number":e,
+  "email":f
+}
+fetch("http://localhost:2000/addemp",{
+  method:"POST",
+  headers:{
+      "content-type":"application/json"
+  },
+  body:JSON.stringify(emps)
+  
+})
+
+
+}
+  </script>
+    <style>
+        body {
+          background-image: url('loginbg.jpg');
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-size: 100% 100%;
+        }
+        button:hover{
+          background-color:crimson;
+          opacity: 0.5px;
+          color:yellow;
+        }
+    </style>
+    
+  </head>
+<body>
+    <center>
+        <h2>Registration page</h2>
+    <br>
+    
+        <label>Name </label><input type="text" id="name"><br><br>
+        <label>location:</label><input type="text" id="location"><br><br>
+        
+        <label for="groups">Choose a blood group:</label>
+        <select name="groups" id="bloodgroups">
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        </select>
+          <br>
+        <label>Age</label><input type="text" id="age"><br><br>
+        <label>Number:</label><input type="text" id="number"><br><br>
+        <label>Email</label><input type="email" id="email"><br><br>
+        <button style="height:45px;width:85px" onclick="enterData()">submit</button>
+       
+   
+    </center>
+</body>
+</html>
